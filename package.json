@@ -35,6 +35,11 @@
     "graphql"
   ],
   "author": "Marc-Olivier Laux <marc-olivier@matlaux.net>",
+  "homepage": "https://github.com/molaux/mui-crudf",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/molaux/mui-crudf"
+  },
   "license": "MIT",
   "devDependencies": {
     "@babel/cli": "^7.12.10",
