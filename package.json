@@ -1,0 +1,50 @@
+{
+  "name": "@molaux/mui-crudf",
+  "version": "1.0.0",
+  "description": "A Material UI component that provides a Create, Update, Delete interface for @molaux/sequelize-graphql-schema-builder",
+  "main": "build/index.js",
+  "scripts": {
+    "start": "webpack --mode=production --watch",
+    "build": "webpack --mode=production"
+  },
+  "dependencies": {
+    "klona": "^2.0.4",
+    "fast-deep-equal": "^3.1.3",
+    "prop-types": "^15.7.2",
+    "graphql-anywhere": "^4.2.7",
+    "pluralize": "^8.0.0"
+  },
+  "peerDependencies": {
+    "@apollo/client": "^3.3.16",
+    "@date-io/date-fns": "^2.10.8",
+    "@material-ui/core": "^5.0.0-alpha.32",
+    "@material-ui/icons": "^5.0.0-alpha.29",
+    "@material-ui/lab": "^5.0.0-alpha.32",
+    "date-fns": "^2.20.0",
+    "graphql": "^15.5.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "^4.0.2"
+  },
+  "keywords": [
+    "react",
+    "material-ui",
+    "crud",
+    "apollo",
+    "graphql"
+  ],
+  "author": "Marc-Olivier Laux <marc-olivier@matlaux.net>",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/cli": "^7.12.10",
+    "@babel/core": "^7.12.10",
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "@babel/plugin-transform-react-jsx": "^7.12.12",
+    "@babel/preset-env": "^7.12.11",
+    "babel-loader": "^8.2.2",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "webpack": "^5.19.0",
+    "webpack-cli": "^4.4.0"
+  }
+}
