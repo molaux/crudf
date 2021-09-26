@@ -1,7 +1,7 @@
 import React from 'react'
-import Button from '@material-ui/core/Button'
-import PhoneIcon from '@material-ui/icons/Phone'
-import MailIcon from '@material-ui/icons/Email'
+import Button from '@mui/material/Button'
+import PhoneIcon from '@mui/icons-material/Phone'
+import MailIcon from '@mui/icons-material/Email'
 import { BooleanIcon } from '@molaux/mui-utils'
 
 import { SHOW_VIEW } from './types'

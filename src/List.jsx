@@ -1,20 +1,20 @@
 import React, { useEffect, useCallback } from 'react'
 import PropTypes from 'prop-types'
 
-import Typography from '@material-ui/core/Typography'
-import CircularProgress from '@material-ui/core/CircularProgress'
-import IconButton from '@material-ui/core/IconButton'
-import Button from '@material-ui/core/Button'
+import Typography from '@mui/material/Typography'
+import CircularProgress from '@mui/material/CircularProgress'
+import IconButton from '@mui/material/IconButton'
+import Button from '@mui/material/Button'
 import {
   Add as AddIcon,
   Edit as EditIcon,
   Delete as DeleteIcon,
   Visibility as ShowIcon
-} from '@material-ui/icons'
+} from '@mui/icons-material'
 
 import pluralize from 'pluralize'
 
-import { useTheme } from '@material-ui/core/styles'
+import { useTheme } from '@mui/material/styles'
 
 import { CommonTable, Center } from '@molaux/mui-utils'
 import { inferShowFactory } from './inferShow'

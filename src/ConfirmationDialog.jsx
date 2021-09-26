@@ -1,12 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import DialogActions from '@material-ui/core/DialogActions'
-import DialogContent from '@material-ui/core/DialogContent'
-import Dialog from '@material-ui/core/Dialog'
-import DialogContentText from '@material-ui/core/DialogContentText'
-import Slide from '@material-ui/core/Slide'
-import Button from '@material-ui/core/Button'
+import DialogActions from '@mui/material/DialogActions'
+import DialogContent from '@mui/material/DialogContent'
+import Dialog from '@mui/material/Dialog'
+import DialogContentText from '@mui/material/DialogContentText'
+import Slide from '@mui/material/Slide'
+import Button from '@mui/material/Button'
 
 const Transition = React.forwardRef((props, ref) => <Slide direction="up" {...props} ref={ref} />)
 

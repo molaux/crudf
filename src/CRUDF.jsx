@@ -7,9 +7,9 @@ import React, { useState, useEffect, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import isEqual from 'fast-deep-equal'
 
-import { makeStyles } from '@material-ui/styles'
-import Box from '@material-ui/core/Box'
-import CircularProgress from '@material-ui/core/CircularProgress'
+import { makeStyles } from '@mui/styles'
+import Box from '@mui/material/Box'
+import CircularProgress from '@mui/material/CircularProgress'
 
 import { Center } from '@molaux/mui-utils'
 import { List } from './List'

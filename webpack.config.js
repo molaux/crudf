@@ -35,7 +35,7 @@ module.exports = {
       "@date-io/date-fns": "@date-io/date-fns",
       'date-fns': 'date-fns',
     },
-    /@material-ui\/.*/,
+    /@mui\/.*/,
     /date-fns\/.*/,
     /graphql\/.*/
   ]

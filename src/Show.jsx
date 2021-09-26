@@ -1,16 +1,16 @@
 import React, { useEffect, useCallback } from 'react'
 import PropTypes from 'prop-types'
 
-import Box from '@material-ui/core/Box'
-import Typography from '@material-ui/core/Typography'
-import Button from '@material-ui/core/Button'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
+import Button from '@mui/material/Button'
 import {
   Edit as EditIcon,
   Delete as DeleteIcon,
   Cancel as CancelIcon
-} from '@material-ui/icons'
-import CircularProgress from '@material-ui/core/CircularProgress'
-import { Grid } from '@material-ui/core'
+} from '@mui/icons-material'
+import CircularProgress from '@mui/material/CircularProgress'
+import { Grid } from '@mui/material'
 import isEqual from 'fast-deep-equal'
 
 import { Center } from '@molaux/mui-utils'

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
-import UITextField from '@material-ui/core/TextField'
+import UITextField from '@mui/material/TextField'
 import { EDIT_VIEW } from '../types'
 import { ControllerPropTypes } from '../controller'
 

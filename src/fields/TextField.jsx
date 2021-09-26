@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import UITextField from '@material-ui/core/TextField'
+import UITextField from '@mui/material/TextField'
 import { ControllerPropTypes } from '../controller'
 
 export const TextField = ({
