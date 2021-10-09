@@ -6,6 +6,7 @@ import { DateField } from './DateField'
 import { TextField } from './TextField'
 import { ObjectSelectorField } from './ObjectSelectorField'
 import { PasswordField } from './PasswordField'
+import IntegerField from './IntegerField'
 
 const CreateField = React.memo(({
   onChange,
@@ -51,7 +52,8 @@ CreateField.propTypes = {
     DateField.propTypes.value,
     ObjectSelectorField.propTypes.value,
     PasswordField.propTypes.value,
-    TextField.propTypes.value
+    TextField.propTypes.value,
+    IntegerField.propTypes.value
   ]),
   component: PropTypes.func.isRequired,
   error: PropTypes.bool,

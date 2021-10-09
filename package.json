@@ -1,10 +1,10 @@
 {
   "name": "@molaux/mui-crudf",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "A Material UI component that provides a Create, Update, Delete interface for @molaux/sequelize-graphql-schema-builder",
   "main": "build/index.js",
   "scripts": {
-    "start": "webpack --mode=production --watch",
+    "start": "webpack --mode=development --watch",
     "build": "webpack --mode=production"
   },
   "dependencies": {
@@ -51,7 +51,7 @@
     "@babel/preset-env": "^7.12.11",
     "babel-loader": "^8.2.2",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "webpack": "^5.51.1",
+    "webpack": "^5.54",
     "webpack-cli": "^4.4.0"
   }
 }

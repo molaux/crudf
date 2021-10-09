@@ -27,7 +27,7 @@ const useStyles = makeStyles({
 
 export const SelectorSummary = (serializer, value) => () => {
   if (!Array.isArray(value)) {
-    return null
+    return serializer(value)
   }
   const maxLength = 3
   const displayValue = value.length > maxLength
@@ -83,7 +83,7 @@ export const ObjectSelectorField = ({
       <InputLabel id="object-selector">{label}</InputLabel>
       <Select
         labelId="object-selector"
-        value={multiple ? value.map((v) => v[idKey]) : value?.[idKey]}
+        value={multiple ? value.map((v) => v[idKey]) : (value?.[idKey] ?? '')}
         onChange={(event) => handleChange(event.target.value)}
         renderValue={SelectorSummary(serializer, value)}
         multiple={multiple}

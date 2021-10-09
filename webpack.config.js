@@ -1,6 +1,7 @@
 var path = require('path');
 module.exports = {
   entry: './src/index.js',
+  devtool: 'cheap-source-map',
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: 'index.js',
@@ -38,5 +39,8 @@ module.exports = {
     /@mui\/.*/,
     /date-fns\/.*/,
     /graphql\/.*/
-  ]
+  ],
+  optimization: {
+    nodeEnv: false
+  }
 };

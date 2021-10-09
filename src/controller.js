@@ -11,7 +11,7 @@ import { klona } from 'klona/lite'
 import pluralize from 'pluralize'
 import isEqual from 'fast-deep-equal'
 
-import { inferData, isObject } from './inferTypes'
+import { inferData, isObject, isMandatory } from './inferTypes'
 import { useCache } from './cache'
 import { toInput, toInputIDs, defaultEntity } from './inferInput'
 
@@ -296,7 +296,15 @@ export const useController = (type, { queryVariables: initialQueryVariables }) =
   const create = useCallback(async (input) => {
     await createMutation({
       variables: {
-        input
+        input: {
+          ...Object
+            .keys(input)
+            .filter((field) => input[field] !== null || isMandatory(type.fields.get(field).inputType))
+            .reduce((o, field) => ({
+              ...o,
+              [field]: input[field] 
+            }), {})
+        }
       }
     })
   }, [createMutation])

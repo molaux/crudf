@@ -39,7 +39,7 @@ ShowRow.propTypes = {
 const ShowField = ({ label, value }) => (
   <>
     <Typography variant="caption" display="block" sx={{ fontWeight: 500 }}>{label}</Typography>
-    <Typography variant="body1" component="div" sx={{ fontWeight: 300 }}>{value || '-'}</Typography>
+    <Typography variant="body1" component="div" sx={{ fontWeight: 300 }}>{value !== null && value !== undefined && value !== '' ? value : '-'}</Typography>
   </>
 )
 

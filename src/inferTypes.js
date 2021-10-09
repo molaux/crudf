@@ -15,6 +15,8 @@ export const isID = expected('ID', 'SCALAR')
 export const isDate = expected('Date', 'SCALAR')
 export const isString = expected('String', 'SCALAR')
 export const isBoolean = expected('Boolean', 'SCALAR')
+export const isInt = expected('Int', 'SCALAR')
+export const isFloat = expected('Float', 'SCALAR')
 
 export const isPhone = (field) => isString(field) && field.name === 'phone'
 export const isEmail = (field) => isString(field) && field.name === 'email'

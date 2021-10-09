@@ -1,4 +1,12 @@
-import { isObject, isList, isDate, isBoolean, isString } from './inferTypes'
+import {
+  isObject,
+  isList,
+  isDate,
+  isBoolean,
+  isString,
+  isInt,
+  isFloat
+} from './inferTypes'
 import { getFinalType } from './graphql'
 
 export const toInputIDs = (finalType) => (o) => finalType.ids
@@ -20,6 +28,10 @@ export const toInput = (type, o, isCreate) => Object.keys(o).reduce((input, fiel
       : typeToInputIDsOrAsIs(o[fieldName])
   } else if (isDate(field)) {
     input[fieldName] = o[fieldName]?.toISOString()
+  } else if (isInt(field)) {
+    input[fieldName] = parseInt(o[fieldName])
+  } else if (isFloat(field)) {
+    input[fieldName] = parseInt(o[fieldName])
   } else {
     input[fieldName] = o[fieldName]
   }
@@ -33,16 +45,20 @@ export const shape = (type) => (o) => Object
 
 export const defaultEntity = (type) => Array
   .from(type.fields.values())
-  .reduce((entity, field) => (type.ids.includes(field.name)
-    ? entity
-    : ({
-        ...entity,
-        [field.name]:
-          isList(field)
-            ? []
-            : isBoolean(field)
-              ? false
-              : isString(field)
-                ? ''
-                : null
-      })), {})
+  .reduce((entity, field) => {
+    const defaultValue = field.inputType.defaultValue
+    return (type.ids.includes(field.name)
+      ? entity
+      : ({
+          ...entity,
+          [field.name]: defaultValue !== undefined
+            ? isInt(field) || isFloat(field) ? `${defaultValue}` : defaultValue
+            : isList(field)
+              ? []
+              : isBoolean(field)
+                ? false
+                : isString(field)
+                  ? ''
+                  : null
+        }))
+    }, {})

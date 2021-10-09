@@ -58,12 +58,21 @@ export const useType = (typeName) => {
   const typeData = typesData?.type
   const inputTypeData = typesData?.inputType
 
-  const { data: validators } = useQuery(
+  const { data: metaFields } = useQuery(
     typeData
-      ? ENTITIES_VALIDATOR_INTROSPECTION(typeData)
+      ? ENTITIES_META_INTROSPECTION(typeData)
       : gql`query { __typename }`,
     {
       skip: !typeData
+    }
+  )
+
+  const { data: metas } = useQuery(
+    typeData && metaFields
+      ? ENTITIES_META_QUERY(typeData, metaFields)
+      : gql`query { __typename }`,
+    {
+      skip: !typeData || ! metaFields
     }
   )
 
@@ -76,13 +85,13 @@ export const useType = (typeName) => {
       )
       : gql`query { __typename }`,
     {
-      skip: !objectFields || !typeData || !validators,
+      skip: !objectFields || !typeData || !metas,
       onCompleted: (data) => {
         const type = klona(typeData)
         const inputType = klona(inputTypeData)
         const objectsIDs = klona(data)
-        const fieldsValidators = validators[`${type.name}Validator`]
-
+        const fieldsValidators = metas[`${type.name}Meta`].validators
+        const fieldsDefaultValues = metas[`${type.name}Meta`].defaultValues
         mapizeFields(type)
         mapizeFields(inputType)
 
@@ -105,6 +114,9 @@ export const useType = (typeName) => {
           getFinalType(field.inputType).validator = field.name in fieldsValidators
             ? fieldsValidators[field.name]
             : null
+          getFinalType(field.inputType).defaultValue = field.name in fieldsDefaultValues
+            ? fieldsDefaultValues[field.name]
+            : null
         }
 
         setType(type)
@@ -117,7 +129,7 @@ export const useType = (typeName) => {
             ? `You have not provided the ${type.name} type introspection, consider providing it through registerIntrospection :`
             : `The ${type.name} type introspection you provided differs from the one just computed, you should update it with :`)
           // eslint-disable-next-line no-console
-          console.log(`${type.name} type :`, computedJson)
+          console.log(`${type.name} type :`, computedJson, type)
         }
       }
     }
@@ -160,9 +172,29 @@ export const ENTITIES_ID_INTROSPECTION = (types) => gql`query {
   }\n`)}
 }`
 
-export const ENTITIES_VALIDATOR_INTROSPECTION = (type) => gql`query {
-  ${type.name}Validator {
-    ${type.fields.filter((field) => getFinalType(field.type).kind !== 'OBJECT').map(({ name }) => name).join('\n')}
+const ENTITIES_META_INTROSPECTION = (type) => gql`query {
+  __type(name: "${type.name}Meta") {
+    fields {
+      name
+      type {
+        fields {
+          name
+        }
+      }
+    }
+  }
+}`
+
+export const ENTITIES_META_QUERY = (type, metaIntrospection) => gql`query {
+  ${type.name}Meta {
+    validators {
+      ${type.fields.filter((field) => getFinalType(field.type).kind !== 'OBJECT').map(({ name }) => name).join('\n')}
+    }
+    ${metaIntrospection.__type.fields.find(({ name }) => name === 'defaultValues')
+      ? `defaultValues {
+        ${metaIntrospection.__type.fields.find(({ name }) => name === 'defaultValues').type.fields.map(({ name }) => `${name}\n`)}
+      }`
+    : ''}
   }
 }`
 
