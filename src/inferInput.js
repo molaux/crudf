@@ -7,6 +7,11 @@ import {
   isInt,
   isFloat
 } from './inferTypes'
+
+import {
+  isEmpty
+} from './inferForm'
+
 import { getFinalType } from './graphql'
 
 export const toInputIDs = (finalType) => (o) => finalType.ids
@@ -27,13 +32,13 @@ export const toInput = (type, o, isCreate) => Object.keys(o).reduce((input, fiel
       ? o[fieldName]?.map(typeToInputIDsOrAsIs)
       : typeToInputIDsOrAsIs(o[fieldName])
   } else if (isDate(field)) {
-    input[fieldName] = o[fieldName]?.toISOString()
+    input[fieldName] = isEmpty(finalType, o[fieldName]) && field.inputType.defaultValue !== undefined ? field.defaultValue : o[fieldName]?.toISOString()
   } else if (isInt(field)) {
-    input[fieldName] = parseInt(o[fieldName])
+    input[fieldName] = isEmpty(finalType, o[fieldName]) && field.inputType.defaultValue !== undefined ? field.defaultValue : parseInt(o[fieldName])
   } else if (isFloat(field)) {
-    input[fieldName] = parseInt(o[fieldName])
+    input[fieldName] = isEmpty(finalType, o[fieldName]) && field.inputType.defaultValue !== undefined ? field.defaultValue : parseFloat(o[fieldName])
   } else {
-    input[fieldName] = o[fieldName]
+    input[fieldName] = isEmpty(finalType, o[fieldName]) && field.inputType.defaultValue !== undefined ? field.defaultValue : o[fieldName]
   }
   return input
 }, {})
