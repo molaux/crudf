@@ -137,7 +137,7 @@ export const Show = ({
                 startIcon={<CancelIcon />}
                 variant="outlined"
               >
-                Retour
+                {translations?.actions?.back ?? 'Back'}
               </Button>
               <Button
                 color="primary"
@@ -146,7 +146,7 @@ export const Show = ({
                 variant="contained"
                 disabled={isDeleted(entity)}
               >
-                Éditer
+                {translations?.actions?.edit ?? 'Edit'}
               </Button>
               <Button
                 color="primary"
@@ -155,7 +155,7 @@ export const Show = ({
                 variant="contained"
                 disabled={isDeleted(entity)}
               >
-                Supprimer
+                {translations?.actions?.delete ?? 'Delete'}
               </Button>
             </Box>
           </Grid>

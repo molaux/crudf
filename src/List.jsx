@@ -62,7 +62,7 @@ export const List = ({
 
   return (
     <>
-      <Typography>{pluralize(controller.type.name)}</Typography>
+      <Typography>{translations?.type?.plural ?? pluralize(translations?.type?.name) ?? pluralize(controller.type.name)}</Typography>
       {!controller.query.data
         ? <Center><CircularProgress color="secondary" /></Center>
         : (
@@ -125,7 +125,7 @@ export const List = ({
               startIcon={<AddIcon />}
               variant="contained"
             >
-              Ajouter
+              {translations?.type?.add ?? `Add ${translations?.type?.singular ?? controller.type.name}`}
             </Button>
           </>
           )}

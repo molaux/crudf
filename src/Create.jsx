@@ -156,7 +156,7 @@ export const Create = ({
                 startIcon={<CancelIcon />}
                 variant="outlined"
               >
-                Annuler
+                {translations?.actions?.cancel ?? 'Cancel'}
               </Button>
               <StatusTooltip
                 onClose={() => setMutationError(false)}
@@ -172,7 +172,7 @@ export const Create = ({
                   variant="contained"
                   disabled={hasErrors(errors) || controller.create.loading}
                 >
-                  Enregistrer
+                  {translations?.actions?.save ?? 'Save'}
                 </Button>
               </StatusTooltip>
             </Box>

@@ -165,7 +165,7 @@ export const Edit = ({
                 startIcon={<CancelIcon />}
                 variant="outlined"
               >
-                Annuler
+                {translations?.actions?.cancel ?? 'Cancel'}
               </Button>
               <StatusTooltip
                 onClose={() => setMutationError(false)}
@@ -184,7 +184,7 @@ export const Edit = ({
                     controller.update.loading ||
                     diff(value, localValue).length === 0 || !hasOnlyValidChanges()}
                 >
-                  Enregistrer
+                  {translations?.actions?.save ?? 'Save'}
                 </Button>
               </StatusTooltip>
               <Button
@@ -194,7 +194,7 @@ export const Edit = ({
                 variant="contained"
                 disabled={disabled || controller.update.loading || isDeleted(initialValue)}
               >
-                Supprimer
+                {translations?.actions?.delete ?? 'Delete'}
               </Button>
             </Box>
           </Grid>

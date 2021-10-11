@@ -8,9 +8,11 @@ import DialogContentText from '@mui/material/DialogContentText'
 import Slide from '@mui/material/Slide'
 import Button from '@mui/material/Button'
 
+import { TranslationsPropTypes, TranslationsDefaultProps } from './propTypes'
+
 const Transition = React.forwardRef((props, ref) => <Slide direction="up" {...props} ref={ref} />)
 
-export const ConfirmationDialog = ({ open, onCancel, onConfirm, text }) => (
+export const ConfirmationDialog = ({ open, onCancel, onConfirm, text, translations }) => (
   <Dialog
     open={open}
     TransitionComponent={Transition}
@@ -26,10 +28,10 @@ export const ConfirmationDialog = ({ open, onCancel, onConfirm, text }) => (
     </DialogContent>
     <DialogActions>
       <Button onClick={onCancel} color="primary">
-        Annuler
+        {translations?.actions?.cancel ?? 'Cancel'}
       </Button>
       <Button onClick={onConfirm} color="primary">
-        Confirmer
+        {translations?.actions?.confirm ?? 'Confirm'}
       </Button>
     </DialogActions>
   </Dialog>
@@ -39,11 +41,13 @@ ConfirmationDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   onCancel: PropTypes.func.isRequired,
   onConfirm: PropTypes.func.isRequired,
-  text: PropTypes.string
+  text: PropTypes.string,
+  translations: TranslationsPropTypes
 }
 
 ConfirmationDialog.defaultProps = {
-  text: 'Vraiment ?'
+  text: 'Vraiment ?',
+  translations: TranslationsDefaultProps
 }
 
 export default ConfirmationDialog

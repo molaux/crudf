@@ -205,6 +205,8 @@ const Typed = ({
         open={confirmationDialogContext.open}
         onCancel={closeConfirmationDialog}
         onConfirm={executeConfirmation}
+        translations={translations}
+        text={translations?.actions?.deleteConfirmationText ?? 'Sure ?'}
       />
     </>
   )
