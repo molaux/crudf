@@ -907,10 +907,10 @@
   resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-0.5.3.tgz#90420f9f9c6d3987f176a19a7d8e764271a2f55d"
   integrity sha512-Fxt+AfXgjMoin2maPIYzFZnQjAXjAL0PHscM5pRTtatFqB+vZxAM9tLp2Optnuw3QOQC40jTNeGYFOMvyf7v9g==
 
-"@molaux/mui-utils@^1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@molaux/mui-utils/-/mui-utils-1.1.1.tgz#e451956f464ebcc2cfb49898fbb92ce6584538de"
-  integrity sha512-XADHAlEl5R9HV0qdHg5ZEEKMIhsylNMzKzFZIVSZW/yfuH3i7X0GLQaldOwDShgtpy705qkN336eLN+oIQtRwA==
+"@molaux/mui-utils@^1.1.4":
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/@molaux/mui-utils/-/mui-utils-1.1.4.tgz#66d939e65b7084b99199b83d2427f1bb544e5894"
+  integrity sha512-WK9V1GUeqWxyWvFa6naE03+4YcfJLdH009IV5tJzpz+C8ADAij6PYx0O9XptUYoPFkkpbIyyE3u/DRf07MkXQw==
   dependencies:
     prop-types "^15.7.2"
 
