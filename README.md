@@ -2,7 +2,7 @@
 
 This piece of code exposes CRUD interfaces built on top of [MUI](https://mui.com/) and [Sequelize GraphQL Schema Builder](https://github.com/molaux/sequelize-graphql-schema-builder).
 
-To achieve this, it uses data exposed by the [Sequelize GraphQL Schema Builder](https://github.com/molaux/sequelize-graphql-schema-builder) to build relationnships, types, fields, validators and default values from the server. At the present time the deifferent views (List, Create, Update, Show) are auto connected to GraphQL subscriptions exposed py the server that updates data in real time.
+To achieve this, it uses data exposed by the [Sequelize GraphQL Schema Builder](https://github.com/molaux/sequelize-graphql-schema-builder) to build relationnships, types, fields, validators and default values from the server. At the present time the deifferent views (List, Create, Update, Show) are auto connected to GraphQL subscriptions exposed by the server that updates data in real time.
 
 From the example (that will be shortly released) :
 
@@ -162,8 +162,8 @@ const UsersConfiguration = ({
       fields: {
         createdAt: 'Creation date',
         updatedAt: 'Last modification date',
-        firstName: 'Firstname',
-        lastName: 'Lastname',
+        firstName: 'First name',
+        lastName: 'Last name',
         name: 'Complete name',
         comment: 'Comment',
         enabled: 'Active',
