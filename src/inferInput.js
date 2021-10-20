@@ -57,9 +57,9 @@ export const defaultEntity = (type) => Array
       : ({
           ...entity,
           [field.name]: defaultValue !== undefined
-            ? isInt(field) || isFloat(field) ? `${defaultValue}` : defaultValue
-            : isList(field)
-              ? []
+            ? isList(field)
+            ? []
+            : isInt(field) || isFloat(field) ? `${defaultValue}` : defaultValue
               : isBoolean(field)
                 ? false
                 : isString(field)
