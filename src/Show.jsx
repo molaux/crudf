@@ -4,11 +4,12 @@ import PropTypes from 'prop-types'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
-import {
-  Edit as EditIcon,
-  Delete as DeleteIcon,
-  Cancel as CancelIcon
-} from '@mui/icons-material'
+
+import EditIcon from '@mui/icons-material/Edit'
+import CancelIcon from '@mui/icons-material/Cancel'
+import DeleteIcon from '@mui/icons-material/Delete'
+
+
 import CircularProgress from '@mui/material/CircularProgress'
 import { Grid } from '@mui/material'
 import isEqual from 'fast-deep-equal'

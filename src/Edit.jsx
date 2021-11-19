@@ -6,11 +6,11 @@ import isEqual from 'fast-deep-equal/es6/react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
-import {
-  Save as SaveIcon,
-  Delete as DeleteIcon,
-  Cancel as CancelIcon
-} from '@mui/icons-material'
+
+import SaveIcon from '@mui/icons-material/Save'
+import CancelIcon from '@mui/icons-material/Cancel'
+import DeleteIcon from '@mui/icons-material/Delete'
+
 import CircularProgress from '@mui/material/CircularProgress'
 import { Grid } from '@mui/material'
 
