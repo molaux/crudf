@@ -19,12 +19,15 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: [["@babel/env", {
-              targets: {
-                browsers: ['last 2 versions'],
-              },
-              modules: false,
-            }]],
+            presets: [
+              ["@babel/preset-env", {
+                targets: {
+                  browsers: ['last 2 versions, not dead'],
+                  // esmodules: true
+                },
+                modules: false
+              }]
+            ],
             plugins: [
               "transform-object-rest-spread",
               "@babel/transform-react-jsx",
