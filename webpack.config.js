@@ -50,6 +50,7 @@ module.exports = {
       "react-router-dom": "react-router-dom",
       "@date-io/date-fns": "@date-io/date-fns",
       'date-fns': 'date-fns',
+      '@molaux/mui-utils': '@molaux/mui-utils'
     },
     /@mui\/.*/,
     /date-fns\/.*/,
