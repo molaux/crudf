@@ -202,6 +202,7 @@ export const TypedShow = ({ type, parentController, value, fieldName, ...props }
 
   useEffect(() => {
     controller.query.use()
+
     if (parentController && fieldName) {
       parentController.registerSubController(fieldName, controller)
       return () => parentController.unregisterSubController(fieldName)

@@ -46,6 +46,7 @@ export const useType = (typeName) => {
     { alias: 'type', variable: 'name', fields: 'fields' },
     { alias: 'inputType', variable: 'inputName', fields: 'inputFields' }
   ]), {
+    fetchPolicy: 'cache-and-network',
     variables: {
       name: typeName,
       inputName: `${typeName}CreateInput`
@@ -63,6 +64,7 @@ export const useType = (typeName) => {
       ? ENTITIES_META_INTROSPECTION(typeData)
       : gql`query { __typename }`,
     {
+      fetchPolicy: 'cache-and-network',
       skip: !typeData
     }
   )
@@ -72,6 +74,7 @@ export const useType = (typeName) => {
       ? ENTITIES_META_QUERY(typeData, metaFields)
       : gql`query { __typename }`,
     {
+      fetchPolicy: 'cache-and-network',
       skip: !typeData || ! metaFields
     }
   )
@@ -86,6 +89,7 @@ export const useType = (typeName) => {
       : gql`query { __typename }`,
     {
       skip: !objectFields || !typeData || !metas,
+      fetchPolicy: 'cache-and-network',
       onCompleted: (data) => {
         const type = klona(typeData)
         const inputType = klona(inputTypeData)
