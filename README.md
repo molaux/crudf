@@ -4,7 +4,7 @@ This piece of code exposes CRUD interfaces built on top of [MUI](https://mui.com
 
 To achieve this, it uses data exposed by the [Sequelize GraphQL Schema Builder](https://github.com/molaux/sequelize-graphql-schema-builder) to build relationnships, types, fields, validators and default values from the server. At the present time the deifferent views (List, Create, Update, Show) are auto connected to GraphQL subscriptions exposed by the server that updates data in real time.
 
-From the example (that will be shortly released) :
+From the example ([MUI App Biolerplate](https://github.com/molaux/mui-app-boilerplate)) :
 
 ```javascript
 import React from 'react'
@@ -162,8 +162,8 @@ const UsersConfiguration = ({
       fields: {
         createdAt: 'Creation date',
         updatedAt: 'Last modification date',
-        firstName: 'First name',
-        lastName: 'Last name',
+        firstName: 'Firstname',
+        lastName: 'Lastname',
         name: 'Complete name',
         comment: 'Comment',
         enabled: 'Active',
@@ -200,7 +200,6 @@ const UsersConfiguration = ({
       },
       hide: [
         'id', 'firstName', 'lastName', 'password', 'authenticationType',
-        'Customers', 'Logs', 'PlanningTemplates', 'WorkPeriods',
         'createdAt', 'updatedAt'
       ]
     }}
@@ -216,7 +215,6 @@ const UsersConfiguration = ({
       ],
       hide: [
         'id', 'lastName', 'firstName', 'authenticationType',
-        'Customers', 'Logs', 'PlanningTemplates', 'WorkPeriods',
         'password'
       ],
       components: {
@@ -235,8 +233,7 @@ const UsersConfiguration = ({
       ],
       hide: [
         'id', 'name', 'authenticationType',
-        'addressId', 'Customers', 'Logs', 'PlanningTemplates', 'WorkPeriods',
-        'createdAt', 'updatedAt'
+        'addressId', 'createdAt', 'updatedAt'
       ],
       components: {
         Address: EditAddressForm
@@ -254,8 +251,7 @@ const UsersConfiguration = ({
       ],
       hide: [
         'id', 'name', 'authenticationType',
-        'addressId', 'Customers', 'Logs', 'PlanningTemplates', 'WorkPeriods',
-        'createdAt', 'updatedAt'
+        'addressId', 'createdAt', 'updatedAt'
       ],
       components: {
         Address: CreateAddressForm
