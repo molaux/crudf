@@ -51,7 +51,7 @@ export const List = ({
   const inferShow = controller.type
     ? Array.from(controller.type.fields.values()).reduce((register, field) => ({
       ...register,
-      [field.name]: inferShowFactory(controller.type, classes, layout, handles)(field.name)
+      [field.name]: inferShowFactory(controller.type, classes, layout, handles, translations)(field.name)
     }), {})
     : null
 

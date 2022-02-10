@@ -19,9 +19,14 @@ import {
 import { getFinalType } from './graphql'
 import { toInputIDs } from './inferInput'
 
-export const inferShowFactory = (type, classes, layout, handles) => (fieldName, forceSingle) => {
+export const handleNullFactory = (serializer, nullSymbol) => (value) => value === null
+  ? nullSymbol
+  : serializer(value)
+
+export const inferShowFactory = (type, classes, layout, handles, translations) => (fieldName, forceSingle) => {
   const field = type?.fields.get(fieldName) || fieldName
   const finalFieldType = getFinalType(field.type)
+  const nullSymbol = translations?.type?.null || '-'
 
   let serializer = (value) => value
   if (isObject(field)) {
@@ -60,6 +65,8 @@ export const inferShowFactory = (type, classes, layout, handles) => (fieldName, 
       ? <Button href={`mailto:${value}`} size="small" startIcon={<MailIcon />} classes={{ root: classes.linkTo }}>{value}</Button>
       : null)
   }
+
+  serializer = handleNullFactory(serializer, nullSymbol)
 
   if (!forceSingle && isList(field)) {
     return (values) => (layout?.layout?.[fieldName]?.maxLength &&

@@ -77,7 +77,7 @@ export const Show = ({
       .filter(({ name }) => hideList.indexOf(name) === -1)
       .reduce((register, field) => ({
         ...register,
-        [field.name]: inferShowFactory(controller.type, classes, layout, handles)(field.name)
+        [field.name]: inferShowFactory(controller.type, classes, layout, handles, translations)(field.name)
       }), {})
     : null
 

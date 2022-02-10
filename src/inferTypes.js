@@ -29,7 +29,9 @@ export const inferData = (type, data) => {
     return data.map((row) => inferData(type, row))
   }
   for (const field of type.fields.values()) {
-    if (isDate(field)) {
+    if (data[field.name] === null) {
+      continue
+    } else if (isDate(field)) {
       data[field.name] = new Date(data[field.name])
     } else if (isObject(field)) {
       data[field.name] = inferData(getFinalType(field.type), data[field.name])
