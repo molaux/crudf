@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { makeStyles } from '@mui/styles'
+import { makeStyles } from 'tss-react/mui'
 import UITextField from '@mui/material/TextField'
 
 import { ControllerPropTypes } from '../controller'

@@ -57,6 +57,7 @@ export const Edit = ({
         ...getChanges(initialValue, localValue)
       }))
     }
+    return () => null
   }, [localValue, isModified])
 
   const [delegatedErrors, _setDelegatedErrors] = useState({})
@@ -122,6 +123,7 @@ export const Edit = ({
       }
       setErrors(newErrors)
     }
+    return () => null
   }, [controller.type, localValue, inferErrors, delegatedErrors])
 
   const hasOnlyValidChanges = () => diff(value, localValue)
@@ -246,7 +248,7 @@ export const TypedEdit = ({ type, parentController, value, fieldName, ...props }
       parentController.registerSubController(fieldName, controller)
       return () => parentController.unregisterSubController(fieldName)
     }
-    return null
+    return () => null
   }, [])
 
   return controller.query.data

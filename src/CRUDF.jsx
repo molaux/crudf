@@ -7,7 +7,7 @@ import React, { useState, useEffect, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import isEqual from 'fast-deep-equal'
 
-import { makeStyles } from '@mui/styles'
+import { makeStyles } from 'tss-react/mui'
 import Box from '@mui/material/Box'
 import CircularProgress from '@mui/material/CircularProgress'
 
@@ -30,7 +30,7 @@ import { useController } from './controller'
 
 import { ConfirmationDialog } from './ConfirmationDialog'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   formControl: {
     minWidth: 200
   },
@@ -89,6 +89,7 @@ const Typed = ({
     if (initialView) {
       setContext({ view: initialView, data: initialValue })
     }
+    return () => null
   }, [initialView, initialValue, setContext])
 
   const controller = useController(type, { queryVariables: {} })
@@ -237,7 +238,7 @@ Typed.defaultProps = {
 }
 
 export const CRUDF = ({ className, typeName, ...props }) => {
-  const classes = useStyles()
+  const { classes } = useStyles()
   const { type } = useType(typeName)
 
   return (

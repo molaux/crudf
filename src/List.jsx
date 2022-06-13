@@ -55,7 +55,10 @@ export const List = ({
     }), {})
     : null
 
-  useEffect(() => controller.query.use(), [])
+  useEffect(() => {
+    controller.query.use()
+    return () => null
+  }, [])
   const hideList = layout?.hide || []
   const order = [...(layout?.order || [])].reverse()
   const isDeleted = useCallback((entity) => controller.status.get(entity[controller.type.ids[0]]) === 'deleted', [controller])

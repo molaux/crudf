@@ -1,12 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { makeStyles } from '@mui/styles'
+import { makeStyles } from 'tss-react/mui'
 import UITextField from '@mui/material/TextField'
 
 import { ControllerPropTypes } from '../controller'
 
-const useIntFieldStyles = makeStyles((theme) => ({
+const useIntFieldStyles = makeStyles()((theme) => ({
   input: {
     '&[type=number]': {
       '-moz-appearance': 'textfield'
@@ -29,7 +29,7 @@ export const FloatField = ({
   parentController,
   ...props
 }) => {
-  const fieldClasses = useIntFieldStyles()
+  const { classes: fieldClasses } = useIntFieldStyles()
 
   return (
     <UITextField

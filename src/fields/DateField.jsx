@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import TextField from '@mui/material/TextField'
 
-import { LocalizationProvider, DateTimePicker } from '@mui/lab'
+import { LocalizationProvider, DateTimePicker } from '@mui/x-date-pickers'
 import DateFnsUtils from '@date-io/date-fns'
 import fr from 'date-fns/locale/fr'
 

@@ -1,7 +1,7 @@
 import React, { useMemo, useEffect } from 'react'
 import PropTypes from 'prop-types'
 
-import { makeStyles } from '@mui/styles'
+import { makeStyles } from 'tss-react/mui'
 import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
@@ -19,7 +19,7 @@ import { isList } from '../inferTypes'
 import { inferShowFactory } from '../inferShow'
 import { shape } from '../inferInput'
 
-const useStyles = makeStyles({
+const useStyles = makeStyles()({
   root: {
     minWidth: 120
   }
@@ -59,6 +59,7 @@ export const ObjectSelectorField = ({
   const idKey = type.ids[0]
   useEffect(() => {
     controller.query.use()
+    return () => null
   }, [controller])
   const handleChange = (value) => {
     if (!controller.query.data) {
@@ -133,7 +134,7 @@ ObjectSelectorField.defaultProps = {
 }
 
 export const ObjectSelectorFieldBuilder = (field) => (props) => {
-  const classes = useStyles()
+  const { classes } = useStyles()
   const isMultiple = useMemo(() => isList(field), [field])
   const { type } = useType(getFinalType(field.type).name)
   const serializer = useMemo(() => inferShowFactory(null, classes)(field, true))

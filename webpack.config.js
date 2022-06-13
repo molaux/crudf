@@ -54,7 +54,8 @@ module.exports = {
     },
     /@mui\/.*/,
     /date-fns\/.*/,
-    /graphql\/.*/
+    /graphql\/.*/,
+    'tss-react/mui'
   ],
   optimization: {
     nodeEnv: false

@@ -113,6 +113,7 @@ export const useController = (type, { queryVariables: initialQueryVariables }) =
     if (originalData != null) {
       setData(inferData(type, klona(originalData[pluralize(type.name)])))
     }
+    return () => null
   }, [originalData])
 
   const { update: updateTypeCache, add: addTypeCache, remove: removeTypeCache } = useCache(type)
