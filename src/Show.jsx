@@ -207,7 +207,6 @@ export const TypedShow = ({ type, parentController, value, fieldName, ...props }
       parentController.registerSubController(fieldName, controller)
       return () => parentController.unregisterSubController(fieldName)
     }
-    return () => null
   }, [])
 
   return controller.query.data
