@@ -19,6 +19,7 @@ import { toInput } from './inferInput'
 import { useType, TypePropTypes } from './graphql'
 import { useController, ControllerPropTypes } from './controller'
 import { TranslationsPropTypes, TranslationsDefaultProps } from './propTypes'
+import { isMandatory } from './inferTypes'
 
 export const Create = ({
   controller,
@@ -36,7 +37,7 @@ export const Create = ({
   const [localValue, _setLocalValue] = useState(
     Object
       .keys(controller.create.defaultValue)
-      .filter((key) => hideList.indexOf(key) === -1)
+      .filter((key) => hideList.indexOf(key) === -1 || isMandatory(controller.type.fields.get(key).inputType))
       .reduce((o, key) => ({
         ...o,
         [key]: controller.create.defaultValue[key]
@@ -79,7 +80,7 @@ export const Create = ({
     try {
       await controller.create.save(input)
       setMutationError(false)
-      onClose?.()
+      onClose?.(input)
     } catch (error) {
       setMutationError(error)
     }
@@ -231,7 +232,7 @@ CreateTypeForm.defaultProps = {
 }
 
 const TypedCreate = ({ type, ...props }) => {
-  const controller = useController(type, { queryVariables: {} })
+  const controller = useController(type)
   return <Create controller={controller} {...props} />
 }
 

@@ -61,6 +61,7 @@ export const Form = ({
       .filter(({ name }) => !userLayout.find((row) => row.indexOf(name) !== -1))
       .map((field) => [field])
   ]
+
   const handles = useMemo(() => (rowsLayout.flat())
     .reduce(({ change, errorStatusChange }, field) => ({
       change: {
@@ -86,13 +87,14 @@ export const Form = ({
                 const Field = formType === CREATE_VIEW
                   ? CreateField
                   : EditField
+
                 return [
                   field.name,
                   <Field
                     fullWidth
                     classes={classes}
-                    error={errors[field.name] !== false}
-                    helperText={(errors[field.name].length && errors[field.name]) || null}
+                    error={errors?.[field.name] !== undefined && errors[field.name] !== false}
+                    helperText={(errors?.[field.name]?.length && errors[field.name]) || null}
                     required={isMandatory(type.fields.get(field.name).inputType)}
                     label={translations?.fields?.[field.name] || field.name}
                     fieldName={field.name}

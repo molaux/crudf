@@ -55,7 +55,7 @@ export const ObjectSelectorField = ({
   parentController,
   ...props
 }) => {
-  const controller = useController(type, { queryVariables: {} })
+  const controller = useController(type)
   const idKey = type.ids[0]
   useEffect(() => {
     controller.query.use()

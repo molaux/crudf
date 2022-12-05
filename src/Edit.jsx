@@ -238,9 +238,8 @@ Edit.defaultProps = {
 }
 
 export const TypedEdit = ({ type, parentController, value, fieldName, ...props }) => {
-  const controller = useController(type, {
-    queryVariables: { query: { where: { ...toInputIDs(type)(value) } } }
-  })
+  const queryVariables = useMemo(() => ({ query: { where: { ...toInputIDs(type)(value) } } }), [value, type])
+  const controller = useController(type, { queryVariables })
 
   useEffect(() => {
     controller.query.use()

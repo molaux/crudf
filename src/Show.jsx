@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react'
+import React, { useMemo, useEffect, useCallback } from 'react'
 import PropTypes from 'prop-types'
 
 import Box from '@mui/material/Box'
@@ -92,7 +92,6 @@ export const Show = ({
 
   const isDeleted = useCallback((entity) => controller.status.get(entity[controller.type.ids[0]]) === 'deleted', [controller])
   const isMainEntity = onEdit && onClose && onDelete
-
   const entity = controller.query.data.find(
     (o) => isEqual(toInputIDs(controller.type)(o), toInputIDs(controller.type)(value))
   )
@@ -116,6 +115,9 @@ export const Show = ({
                       classes={classes}
                       label={translations?.fields?.[field.name] || field.name}
                       value={inferShow[field.name](entity[field.name])}
+                      ownerEntity={entity}
+                      fieldName={field.name}
+                      parentController={controller}
                     />
                   ]
                 })}
@@ -196,9 +198,11 @@ Show.defaultProps = {
 }
 
 export const TypedShow = ({ type, parentController, value, fieldName, ...props }) => {
-  const controller = useController(type, {
-    queryVariables: { query: { where: { ...toInputIDs(type)(value) } } }
-  })
+  const queryVariables = useMemo(() => value
+    ? { query: { where: { ...toInputIDs(type)(value) } } }
+    : null, [value, type])
+
+  const controller = useController(type, { queryVariables })
 
   useEffect(() => {
     controller.query.use()
@@ -209,7 +213,7 @@ export const TypedShow = ({ type, parentController, value, fieldName, ...props }
     }
   }, [])
 
-  return controller.query.data
+  return value && controller.query.data
     ? controller.query.data.length
       ? (
         <Show

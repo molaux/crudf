@@ -1,4 +1,4 @@
-export { CRUDF } from './CRUDF'
+export { CRUDF, TypeCRUDF } from './CRUDF'
 export * from './Create'
 export * from './List'
 export * from './Show'

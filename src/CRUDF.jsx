@@ -8,11 +8,15 @@ import PropTypes from 'prop-types'
 import isEqual from 'fast-deep-equal'
 
 import { makeStyles } from 'tss-react/mui'
-import Box from '@mui/material/Box'
+import {
+  Box,
+  Typography,
+  Grid
+} from '@mui/material'
 import CircularProgress from '@mui/material/CircularProgress'
 
 import { Center } from '@molaux/mui-utils'
-import { List } from './List'
+import { TypedList, List } from './List'
 import { Edit } from './Edit'
 import { Show, TypedShow } from './Show'
 import { Create } from './Create'
@@ -26,7 +30,7 @@ import {
   SHOW_VIEW
 } from './types'
 
-import { useController } from './controller'
+import { ControllerPropTypes, useController } from './controller'
 
 import { ConfirmationDialog } from './ConfirmationDialog'
 
@@ -68,7 +72,7 @@ const useStyles = makeStyles()((theme) => ({
   }
 }))
 
-const Typed = ({
+export const CRUDF = ({
   type,
   classes,
   translations,
@@ -77,13 +81,22 @@ const Typed = ({
   showLayout,
   createLayout,
   initialView,
-  initialValue,
-  handles
+  value,
+  parentController,
+  fieldName,
+  ownerEntity,
+  handles,
+  label
 }) => {
+  const [initialValue, setInitialValue] = useState(value)
   const [context, setContext] = useState({
     view: initialView || LIST_VIEW,
     data: initialValue || null
   })
+
+  useEffect(() => {
+    setInitialValue(value)
+  }, [setInitialValue, value])
 
   useEffect(() => {
     if (initialView) {
@@ -92,17 +105,35 @@ const Typed = ({
     return () => null
   }, [initialView, initialValue, setContext])
 
-  const controller = useController(type, { queryVariables: {} })
+  const controller = useController(type, {
+    owner: {
+      controller: parentController,
+      fieldName,
+      entity: ownerEntity
+    }
+  })
 
   useEffect(() => {
     controller.update.registerOnSaveCompleted({
-      current: () => new Promise((resolve) => {
-        setContext({ view: LIST_VIEW, data: null })
+      current: (data) => new Promise((resolve) => {
+        setContext({ view: LIST_VIEW, data: initialValue || null })
         resolve()
       })
     })
     return () => controller.update.unregisterOnSaveCompleted()
-  }, [])
+  }, [controller])
+
+  useEffect(() => {
+    controller.create.registerOnCreateCompleted({
+      current: (data) => new Promise((resolve) => {
+        setInitialValue((d) => d
+          ? [...d, toInputIDs(type)(data)]
+          : null)
+        resolve()
+      })
+    })
+    return () => controller.create.unregisterOnCreateCompleted()
+  }, [controller])
 
   const [confirmationDialogContext, setConfirmationDialogContext] = useState({
     open: false,
@@ -132,88 +163,99 @@ const Typed = ({
   }, [closeConfirmationDialog, confirmationDialogContext])
 
   return (
-    <>
-      {context.view === LIST_VIEW
+    <Grid container direction="column">
+      {label
         ? (
-          <List
-            controller={controller}
-            classes={classes}
-            onEdit={(entity) => setContext({ view: EDIT_VIEW, data: entity })}
-            onCreate={(entity) => setContext({ view: CREATE_VIEW, data: entity })}
-            onShow={(entity) => setContext({ view: SHOW_VIEW, data: entity })}
-            onDelete={handleDelete}
-            translations={translations}
-            handles={handles}
-            layout={listLayout}
-          />
+          <Grid item>
+            <Typography sx={{ fontWeight: 400 }} gutterBottom variant="h6">{label}</Typography>
+          </Grid>
           )
-        : context.view === EDIT_VIEW
+        : null}
+      <Grid item container spacing={2} sx={label ? { paddingLeft: (theme) => theme.spacing(2) } : {}} classes={label ? { root: classes.innerShow } : {}}>
+        {context.view === LIST_VIEW
           ? (
-            <Edit
-              controller={controller}
+            <TypedList
+              type={type}
               classes={classes}
-              value={context.data}
-              onClose={() => setContext({ view: LIST_VIEW, data: null })}
+              value={Array.isArray(context.data) ? context.data : null}
+              onEdit={(entity) => setContext({ view: EDIT_VIEW, data: entity })}
+              onCreate={(entity) => setContext({ view: CREATE_VIEW, data: entity })}
+              onShow={(entity) => setContext({ view: SHOW_VIEW, data: entity })}
               onDelete={handleDelete}
               translations={translations}
-              layout={editLayout}
+              handles={handles}
+              layout={listLayout}
+              label={!label}
             />
             )
-          : context.view === CREATE_VIEW
+          : context.view === EDIT_VIEW
             ? (
-              <Create
+              <Edit
                 controller={controller}
                 classes={classes}
-                onClose={() => setContext({ view: LIST_VIEW, data: null })}
+                value={context.data}
+                onClose={() => setContext({ view: LIST_VIEW, data: initialValue || null  })}
+                onDelete={handleDelete}
                 translations={translations}
-                layout={createLayout}
+                layout={editLayout}
               />
               )
-            : context.view === SHOW_VIEW
-              ? controller.query.data?.find(
-                (o) => isEqual(
-                  toInputIDs(controller.type)(o), toInputIDs(controller.type)(context.data)
+            : context.view === CREATE_VIEW
+              ? (
+                <Create
+                  controller={controller}
+                  classes={classes}
+                  onClose={() => setContext({ view: LIST_VIEW, data: initialValue || null  })}
+                  translations={translations}
+                  layout={createLayout}
+                />
                 )
-              )
-                ? (
-                  <Show
-                    controller={controller}
-                    classes={classes}
-                    value={context.data}
-                    onClose={() => setContext({ view: LIST_VIEW, data: null })}
-                    onEdit={(entity) => setContext({ view: EDIT_VIEW, data: entity })}
-                    onDelete={handleDelete}
-                    translations={translations}
-                    layout={showLayout}
-                    handles={handles}
-                  />
+              : context.view === SHOW_VIEW
+                ? controller.query.data?.find(
+                  (o) => isEqual(
+                    toInputIDs(controller.type)(o), toInputIDs(controller.type)(context.data)
                   )
-                : (
-                  <TypedShow
-                    type={type}
-                    classes={classes}
-                    value={context.data}
-                    onClose={() => setContext({ view: LIST_VIEW, data: null })}
-                    onEdit={(entity) => setContext({ view: EDIT_VIEW, data: entity })}
-                    onDelete={handleDelete}
-                    translations={translations}
-                    layout={showLayout}
-                    handles={handles}
-                  />
-                  )
-              : 'Not yet implemented'}
-      <ConfirmationDialog
-        open={confirmationDialogContext.open}
-        onCancel={closeConfirmationDialog}
-        onConfirm={executeConfirmation}
-        translations={translations}
-        text={translations?.actions?.deleteConfirmationText ?? 'Sure ?'}
-      />
-    </>
+                )
+                  ? (
+                    <Show
+                      controller={controller}
+                      classes={classes}
+                      value={context.data}
+                      onClose={() => setContext({ view: LIST_VIEW, data: initialValue || null  })}
+                      onEdit={(entity) => setContext({ view: EDIT_VIEW, data: entity })}
+                      onDelete={handleDelete}
+                      translations={translations}
+                      layout={showLayout}
+                      handles={handles}
+                    />
+                    )
+                  : (
+                    <TypedShow
+                      type={type}
+                      classes={classes}
+                      value={context.data}
+                      onClose={() => setContext({ view: LIST_VIEW, data: initialValue || null  })}
+                      onEdit={(entity) => setContext({ view: EDIT_VIEW, data: entity })}
+                      onDelete={handleDelete}
+                      translations={translations}
+                      layout={showLayout}
+                      handles={handles}
+                    />
+                    )
+                : 'Not yet implemented'}
+        <ConfirmationDialog
+          open={confirmationDialogContext.open}
+          onCancel={closeConfirmationDialog}
+          onConfirm={executeConfirmation}
+          translations={translations}
+          text={translations?.actions?.deleteConfirmationText ?? 'Sure ?'}
+        />
+      </Grid>
+    </Grid>
   )
 }
 
-Typed.propTypes = {
+CRUDF.propTypes = {
   type: TypePropTypes.isRequired,
   classes: PropTypes.shape({}).isRequired,
   translations: Edit.propTypes.translations,
@@ -223,10 +265,13 @@ Typed.propTypes = {
   showLayout: Show.propTypes.layout,
   handles: Show.propTypes.handles,
   initialView: PropTypes.oneOf([SHOW_VIEW, EDIT_VIEW, LIST_VIEW, CREATE_VIEW]),
-  initialValue: PropTypes.shape({})
+  initialValue: PropTypes.shape({}),
+  parentController: ControllerPropTypes,
+  value: PropTypes.arrayOf(PropTypes.shape({})),
+  fieldName: PropTypes.string
 }
 
-Typed.defaultProps = {
+CRUDF.defaultProps = {
   translations: Edit.defaultProps.translations,
   listLayout: List.defaultProps.layout,
   editLayout: Edit.defaultProps.layout,
@@ -234,10 +279,13 @@ Typed.defaultProps = {
   showLayout: Show.defaultProps.layout,
   handles: Show.defaultProps.handles,
   initialView: LIST_VIEW,
-  initialValue: null
+  initialValue: null,
+  parentController: null,
+  fieldName: null,
+  value: null
 }
 
-export const CRUDF = ({ className, typeName, ...props }) => {
+export const TypeCRUDF = ({ className, typeName, ...builderProps }) => (props) => {
   const { classes } = useStyles()
   const { type } = useType(typeName)
 
@@ -246,19 +294,17 @@ export const CRUDF = ({ className, typeName, ...props }) => {
       <Box className={classes.mainBox}>
         {!type
           ? <Center><CircularProgress color="secondary" /></Center>
-          : <Typed type={type} classes={classes} {...props} />}
+          : <CRUDF type={type} classes={classes} {...props} {...builderProps} />}
       </Box>
     </div>
   )
 }
 
-CRUDF.propTypes = {
+TypeCRUDF.propTypes = {
   typeName: PropTypes.string.isRequired,
   className: PropTypes.string
 }
 
-CRUDF.defaultProps = {
+TypeCRUDF.defaultProps = {
   className: null
 }
-
-export default CRUDF

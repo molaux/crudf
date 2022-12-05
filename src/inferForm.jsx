@@ -79,7 +79,7 @@ export const inferErrorsFactory = (type) => (fieldName) => {
 
   if (isMandatory(field.inputType)) {
     mandatory = (value) => (isEmpty(finalFieldType, value) ? 'Ce champ est requis' : false)
-  } 
+  }
 
   if (isInt(field.inputType)) {
     error = (value) => (!isEmpty(finalFieldType, value) && !/^\s*[0-9]+\s*$/.test(value) ? 'Un entier est attendu ici' : false)

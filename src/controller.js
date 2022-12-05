@@ -30,7 +30,16 @@ import {
   getFinalType
 } from './graphql'
 
-export const useController = (type, { queryVariables: initialQueryVariables }) => {
+export const useController = (type, options) => {
+  const {
+    queryVariables: initialQueryVariables,
+    owner
+  } = {
+    queryVariables: null,
+    owner: null,
+    ...options || {}
+  }
+
   const [[status], setStatuss] = useState([new Map()])
   const setStatus = (map) => setStatuss([map])
   const onSaveCompleted = useRef()
@@ -70,9 +79,22 @@ export const useController = (type, { queryVariables: initialQueryVariables }) =
     setParentOnSaveCompleted(null)
   }, [setParentOnSaveCompleted])
 
+  const [parentOnCreateCompleted, setParentOnCreateCompleted] = useState(null)
+  const registerOnCreateCompleted = useCallback((func) => {
+    setParentOnCreateCompleted(() => func)
+  }, [setParentOnCreateCompleted])
+
+  const unregisterOnCreateCompleted = useCallback(() => {
+    setParentOnCreateCompleted(null)
+  }, [setParentOnCreateCompleted])
+
   const [queryVariables, setQueryVariables] = useState(
     initialQueryVariables?.query ? initialQueryVariables : { ...initialQueryVariables, query: {} }
   )
+
+  useEffect(() => {
+    setQueryVariables((qv) => initialQueryVariables?.query ? initialQueryVariables : { ...initialQueryVariables, query: {} })
+  }, [initialQueryVariables, setQueryVariables])
 
   const [
     TYPE_UPDATE_MUTATION,
@@ -249,7 +271,19 @@ export const useController = (type, { queryVariables: initialQueryVariables }) =
   }, [mutate, type, subControllers])
 
   // Create
-  const emptyEntity = useMemo(() => defaultEntity(type), [type])
+  const emptyEntity = useMemo(
+    () => owner?.controller && owner?.entity
+      ? ({
+          ...defaultEntity(type),
+          ...[...type.fields.values()]
+            .filter(({ type: fieldType }) => owner.controller.type.name === getFinalType(fieldType).name)
+            .reduce((o, field) => ({
+              ...o,
+              [field.name]: owner.entity
+            }), {})
+        })
+      : defaultEntity(type),
+    [type, owner?.controller, owner?.entity])
 
   const propagateCreate = (values, isForeign) => {
     if (!Array.isArray(values) && values) {
@@ -275,6 +309,7 @@ export const useController = (type, { queryVariables: initialQueryVariables }) =
       setStatus(status)
     } else if (!skipQuery) {
       const invalidateTypes = [type.name]
+      // invalidate foreign controllers
       for (const newObject of values) {
         for (const field of Array.from(
           type.fields.values()
@@ -291,7 +326,10 @@ export const useController = (type, { queryVariables: initialQueryVariables }) =
   }
 
   const [createMutation, { loading: creationLoading }] = useMutation(TYPE_CREATE_MUTATION, {
-    onCompleted: (createData) => propagateCreate(createData[`create${type.name}`])
+    onCompleted: async (createData) => {
+      propagateCreate(createData[`create${type.name}`])
+      await parentOnCreateCompleted?.current(createData[`create${type.name}`])
+    }
   })
 
   const create = useCallback(async (input) => {
@@ -365,7 +403,9 @@ export const useController = (type, { queryVariables: initialQueryVariables }) =
       save: create,
       defaultValue: emptyEntity,
       mutation: TYPE_CREATE_MUTATION,
-      loading: creationLoading
+      loading: creationLoading,
+      registerOnCreateCompleted,
+      unregisterOnCreateCompleted
     },
     delete: {
       delete: deleteEntity,
@@ -388,6 +428,8 @@ export const useController = (type, { queryVariables: initialQueryVariables }) =
     TYPE_UPDATE_MUTATION,
     registerOnSaveCompleted,
     unregisterOnSaveCompleted,
+    registerOnCreateCompleted,
+    unregisterOnCreateCompleted,
     create,
     emptyEntity,
     TYPE_CREATE_MUTATION,
@@ -429,6 +471,8 @@ export const ControllerPropTypes = PropTypes.shape({
     save: PropTypes.func.isRequired,
     defaultValue: PropTypes.shape({}).isRequired,
     mutation: PropTypes.shape({}).isRequired,
+    registerOnCreateCompleted: PropTypes.func.isRequired,
+    unregisterOnCreateCompleted: PropTypes.func.isRequired,
     loading: PropTypes.bool.isRequired
   }),
   delete: PropTypes.shape({
