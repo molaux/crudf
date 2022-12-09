@@ -66,9 +66,9 @@ const useStyles = makeStyles()((theme) => ({
     marginTop: theme.spacing(-1)
   },
   halfWidth: {
-    [theme.breakpoints.up('lg')]: {
-      width: '50%'
-    }
+    // [theme.breakpoints.up('lg')]: {
+    //   width: '50%'
+    // }
   }
 }))
 
@@ -163,7 +163,7 @@ export const CRUDF = ({
   }, [closeConfirmationDialog, confirmationDialogContext])
 
   return (
-    <Grid container direction="column">
+    <Grid container direction="column" sx={{ maxWidth: '100%' }}>
       {label
         ? (
           <Grid item>

@@ -48,7 +48,7 @@ export const Form = ({
       .filter(({ name }) => hideList.indexOf(name) === -1)
       .reduce((register, field) => ({
         ...register,
-        [field.name]: inferFormFactory(type, classes, layout)(field.name)
+        [field.name]: inferFormFactory(type, classes, layout, translations)(field.name)
       }), {})
     : null),
   [type, layout?.hide])

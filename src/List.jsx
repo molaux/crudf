@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography'
 import CircularProgress from '@mui/material/CircularProgress'
 import IconButton from '@mui/material/IconButton'
 import Button from '@mui/material/Button'
+import Box from '@mui/material/Box'
 
 import AddIcon from '@mui/icons-material/Add'
 import EditIcon from '@mui/icons-material/Edit'
@@ -63,7 +64,7 @@ export const List = ({
   const isDeleted = useCallback((entity) => controller.status.get(entity[controller.type.ids[0]]) === 'deleted', [controller])
 
   return (
-    <>
+    <Box flex flexDirection="column" sx={{ maxWidth: '100%' }}>
       {label === false
         ? null
         : (
@@ -136,7 +137,7 @@ export const List = ({
           </Button>
         )
         : null}
-    </>
+    </Box>
   )
 }
 

@@ -5,7 +5,8 @@ import {
   isBoolean,
   isString,
   isInt,
-  isFloat
+  isFloat,
+  isDateOnly
 } from './inferTypes'
 
 import {
@@ -18,7 +19,7 @@ export const toInputIDs = (finalType) => (o) => finalType.ids
   .reduce((input, fieldName) => ({ ...input, [fieldName]: o[fieldName] }), {})
 
 export const toInputIDsOrAsIs = (finalType) => (o) => (finalType.ids
-  .reduce((ok, id) => id in o && ok, true)
+  .reduce((ok, id) => id in (o || {}) && ok, true)
   ? toInputIDs(finalType)(o)
   : o)
 
@@ -31,7 +32,7 @@ export const toInput = (type, o, isCreate) => Object.keys(o).reduce((input, fiel
     input[fieldName] = isList(field)
       ? o[fieldName]?.map(typeToInputIDsOrAsIs)
       : typeToInputIDsOrAsIs(o[fieldName])
-  } else if (isDate(field)) {
+  } else if (isDate(field) || isDateOnly(field)) {
     input[fieldName] = isEmpty(finalType, o[fieldName]) && field.inputType.defaultValue !== undefined ? field.defaultValue : o[fieldName]?.toISOString()
   } else if (isInt(field)) {
     input[fieldName] = isEmpty(finalType, o[fieldName]) && field.inputType.defaultValue !== undefined ? field.defaultValue : parseInt(o[fieldName])

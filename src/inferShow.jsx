@@ -3,6 +3,8 @@ import Button from '@mui/material/Button'
 import PhoneIcon from '@mui/icons-material/Phone'
 import MailIcon from '@mui/icons-material/Email'
 import { BooleanIcon } from '@molaux/mui-utils'
+import { format } from 'date-fns'
+import fr from 'date-fns/locale/fr'
 
 import { SHOW_VIEW } from './types'
 
@@ -10,10 +12,12 @@ import {
   isObject,
   isList,
   isDate,
+  isDateOnly,
   isBoolean,
   isPhone,
   isEmail,
-  isPassword
+  isPassword,
+  isEnum
 } from './inferTypes'
 
 import { getFinalType } from './graphql'
@@ -52,10 +56,14 @@ export const inferShowFactory = (type, classes, layout, handles, translations) =
     }
   } else if (isDate(field)) {
     serializer = (value) => value.toLocaleString()
+  } else if (isDateOnly(field)) {
+    serializer = (value) => format(value, 'dd/MM/yyyy', { locale: fr })
   } else if (isBoolean(field)) {
     serializer = (value) => <BooleanIcon state={value} />
   } else if (isPassword(field)) {
     serializer = () => '******'
+  } else if (isEnum(field)) {
+    serializer = (value) => translations?.enums?.[fieldName]?.[value] ?? value
   } else if (isPhone(field)) {
     serializer = (value) => (value
       ? <Button href={`tel:${value}`} size="small" startIcon={<PhoneIcon />} classes={{ root: classes.linkTo }}>{value}</Button>

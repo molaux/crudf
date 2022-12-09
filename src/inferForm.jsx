@@ -1,8 +1,10 @@
 import { IntegerField } from './fields/IntegerField'
 import { FloatField } from './fields/FloatField'
 import { DateField } from './fields/DateField'
+import { DateOnlyField } from './fields/DateOnlyField'
 import { TextField } from './fields/TextField'
 import { BooleanField } from './fields/BooleanField'
+import { EnumSelectorFieldBuilder } from './fields/EnumSelectorField'
 import { PasswordField } from './fields/PasswordField'
 import { ObjectSelectorFieldBuilder } from './fields/ObjectSelectorField'
 
@@ -11,11 +13,13 @@ import {
   isList,
   isMandatory,
   isDate,
+  isDateOnly,
   isBoolean,
   isPassword,
   isInt,
   isFloat,
-  isString
+  isString,
+  isEnum
   // isPhone
 } from './inferTypes'
 
@@ -30,7 +34,7 @@ export const isEmpty = (type, value) => {
   return !value
 }
 
-export const inferFormFactory = (type, classes, layout) => (fieldName) => {
+export const inferFormFactory = (type, classes, layout, translations) => (fieldName) => {
   const field = type.fields.get(fieldName)
 
   if (isObject(field)) {
@@ -40,12 +44,20 @@ export const inferFormFactory = (type, classes, layout) => (fieldName) => {
     return ObjectSelectorFieldBuilder(field, classes)
   }
 
+  if (isEnum(field)) {
+    return EnumSelectorFieldBuilder(field, translations?.enums?.[fieldName])
+  }
+
   if (isList(field)) {
     return (props) => 'LIST'
   }
 
   if (isDate(field)) {
     return DateField
+  }
+
+  if (isDateOnly(field)) {
+    return DateOnlyField
   }
 
   if (isBoolean(field)) {

@@ -1,6 +1,6 @@
 {
   "name": "@molaux/mui-crudf",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "A Material UI component that provides a Create, Update, Delete interface for @molaux/sequelize-graphql-schema-builder",
   "main": "build/index.js",
   "scripts": {

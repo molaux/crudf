@@ -7,12 +7,14 @@ export const isObject = (fieldOrType) => isKind('OBJECT')(fieldOrType.type || fi
 export const isList = (fieldOrType) => isKind('LIST')(fieldOrType.type || fieldOrType)
 export const isMandatory = (fieldOrType) => isKind('NON_NULL')(fieldOrType.type || fieldOrType)
 export const isScalar = (fieldOrType) => isKind('SCALAR')(fieldOrType.type || fieldOrType)
+export const isEnum = (fieldOrType) => isKind('ENUM')(fieldOrType.type || fieldOrType)
 
 export const expected = (expectedName, expectedKind) => ({ type }) => (
   ({ name, kind }) => name === expectedName && kind === expectedKind)(getFinalType(type))
 
 export const isID = expected('ID', 'SCALAR')
 export const isDate = expected('Date', 'SCALAR')
+export const isDateOnly = expected('DateOnly', 'SCALAR')
 export const isString = expected('String', 'SCALAR')
 export const isBoolean = expected('Boolean', 'SCALAR')
 export const isInt = expected('Int', 'SCALAR')
@@ -31,7 +33,7 @@ export const inferData = (type, data) => {
   for (const field of type.fields.values()) {
     if (data[field.name] === null) {
       continue
-    } else if (isDate(field)) {
+    } else if (isDate(field) || isDateOnly(field)) {
       data[field.name] = new Date(data[field.name])
     } else if (isObject(field)) {
       data[field.name] = inferData(getFinalType(field.type), data[field.name])

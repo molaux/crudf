@@ -26,7 +26,7 @@ import { inferShowFactory } from './inferShow'
 const ShowRow = ({ fields }) => (
   <>
     {fields.map(([key, Field]) => (
-      <Grid key={key} xs={12 / fields.length} item>
+      <Grid key={key} sx={{ maxWidth: '100%' }} item>
         {Field}
       </Grid>
     ))}
@@ -104,7 +104,7 @@ export const Show = ({
       <Grid item container spacing={2} classes={!isMainEntity ? { root: classes.innerShow } : {}}>
         {rowsLayout
           .map((fields) => (
-            <Grid key={fields.map(({ name }) => name).join('-')} container item spacing={3}>
+            <Grid key={fields.map(({ name }) => name).join('-')} container item  sx={{ maxWidth: '100%', justifyContent: 'flex-start' }}spacing={3}>
               <ShowRow
                 fields={fields.map((field) => {
                   const Field = layout?.components?.[field.name] ?? ShowField

@@ -212,30 +212,36 @@ __type(name: $${variable}) {
     type {
       name
       kind
+      enumValues { name }
       ${fields} {
         name
         description
         type {
           name
           kind
+          enumValues { name }
           ofType {
             name
             kind
+            enumValues { name }
           }
         }
       }
       ofType {
         name
         kind
+        enumValues { name }
         ${fields} {
           name
           description
           type {
             name
             kind
+            enumValues { name }
             ofType {
               name
               kind
+              enumValues { name }
             }
           }
         }
