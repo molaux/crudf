@@ -15,7 +15,7 @@
     "prop-types": "^15.8.1"
   },
   "peerDependencies": {
-    "@molaux/mui-utils": "link:../mui-utils",
+    "@molaux/mui-utils": "^1.3.3",
     "@apollo/client": "^3.6.5",
     "@date-io/date-fns": "^2.14.0",
     "@mui/icons-material": "^5.8.3",
